@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SecureMail Pro</title>
+  <!-- Link to CDN CSS on port 6000 -->
+  <link rel="stylesheet" href="http://localhost:6000/theme.css">
+  <style>
+    body { font-family: Arial, sans-serif; display:flex; height:100vh; margin:0; }
+    #sidebar { width:260px; border-right:1px solid #ddd; padding:10px; box-sizing:border-box; }
+    #main { flex:1; padding:20px; box-sizing:border-box; }
+    .email-item { padding:8px; border-bottom:1px solid #eee; cursor:pointer; }
+    .email-item:hover { background:#f7f7f7; }
+    .logo-container img { max-width:120px; height:auto; }
+    #support-root { position:fixed; right:12px; bottom:12px; z-index:9999; }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <div class="logo-container">
+      <img src="http://localhost:6000/logo.png" alt="Logo">
+    </div>
+    <div id="username">John Smith</div>
+    <h3>Inbox</h3>
+    <div id="email-list"></div>
+  </div>
+
+  <div id="main">
+    <h2 id="email-subject">Select an email</h2>
+    <div id="email-body">No email selected.</div>
+  </div>
+
+  <div id="support-root"></div>
+
+  <!-- App main script -->
+  <script>
+    // Set cookie
+    document.cookie = "SessionID=123456; path=/";
+
+    async function loadEmails() {
+      try {
+        const res = await fetch('/api/emails');
+        const emails = await res.json();
+        const list = document.getElementById('email-list');
+        list.innerHTML = '';
+        emails.forEach(e => {
+          const div = document.createElement('div');
+          div.className = 'email-item';
+          div.textContent = e.sender + ' — ' + e.subject;
+          div.onclick = () => {
+            document.getElementById('email-subject').innerText = e.subject;
+            document.getElementById('email-body').innerText = e.body;
+          };
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Failed to load emails', err);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadEmails);
+  </script>
+
+  <!-- Bridge scripts from other origins -->
+  <script src="http://localhost:6000/react-mock.js"></script>
+  <script src="http://localhost:4000/support.js"></script>
+  <script src="http://localhost:5000/weather.js"></script>
+</body>
+</html>
+
