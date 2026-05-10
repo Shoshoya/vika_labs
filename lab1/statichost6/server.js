@@ -8,7 +8,7 @@ const config = fs.existsSync('config.json') ? JSON.parse(fs.readFileSync('config
 const version = fs.existsSync('version.txt') ? fs.readFileSync('version.txt','utf8').trim() : '1.0.0';
 
 console.log(`[System] Starting StaticHost v${version}...`);
-
+ 
 if (config.mode === 'mode1') {
   const cors = require('cors');
   app.use(cors());
