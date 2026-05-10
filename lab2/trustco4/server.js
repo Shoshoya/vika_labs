@@ -23,3 +23,4 @@ app.get('/support/messages', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`TrustCo listening on http://localhost:${PORT}`));
+
