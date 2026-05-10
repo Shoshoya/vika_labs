@@ -46,3 +46,5 @@ app.get('/api/emails', (req, res) => {
 app.listen(PORT, () => {
   console.log(`[GoodHost] Listening on http://localhost:${PORT}`);
 });
+
+
